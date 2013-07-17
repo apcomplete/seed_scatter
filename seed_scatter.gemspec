@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = SeedScatter::VERSION
   spec.authors       = ["Alex Padgett"]
   spec.email         = ["apadgett@topicdesign.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{seed scatter changes some utility for rails seed files}
+  spec.summary       = %q{seed scatter splits your model seeds into individual files}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -18,6 +18,10 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_runtime_dependency 'railties', '>= 3.0.0'
+
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec", "~> 2.13.0"
+  spec.add_development_dependency "cucumber", "~> 1.3.3"
 end
