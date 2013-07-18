@@ -4,7 +4,7 @@ module SeedScatter
   module Generators
     class Base < Rails::Generators::NamedBase
       def self.source_root
-        File.expand_path(File.join(File.dirname(__FILE__), generator_name, 'templates'))
+        File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
       end
     end
   end
