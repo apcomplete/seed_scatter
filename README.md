@@ -1,16 +1,21 @@
 # SeedScatter
 
-TODO: Write a gem description
+SeedScatter is a gem that adds utility and organization to Ruby on Rails seed files by scattering them into multiple files.
+
+SeedScatter allows you to:
+
+* Separate seeds into model specific files
+* Dump model information already in the database to their respective seed files
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add it to your Gemfile:
 
     gem 'seed_scatter'
 
-And then execute:
+And then run:
 
-    $ bundle
+    $ bundle install
 
 Or install it yourself as:
 
@@ -18,7 +23,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+SeedScatter overrides the default rake task `db:seed` to separate seeds.  Seeding is still just as easy as it was before:
+
+    $ rake db:seed
+
+To dump a specific model's information from the database to a seed file:
+
+    $ rake db:harvest[MODEL_NAME]
+
+To dump all of your models' information from the database to their respective seed files:
+
+    $ rake db:harvest
+
+
+## Todos
+
+* Re-seed models one at a time
+* Support for namespaced models
+* Support for join tables
 
 ## Contributing
 
