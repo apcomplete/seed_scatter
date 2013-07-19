@@ -4,15 +4,30 @@ module SeedScatter
   class Harvester < Thor::Group
     include Thor::Actions
 
-    def dump_model(model)
-      @model = model.underscore.singularize
-      @harvest_data = []
-      write_to = "db/seeds/#{@model.downcase.pluralize}.rb"
-      klass = @model.camelize.constantize
+    def init(model)
+      models = if model == :all
+                 Dir['app/models/*.rb'].map {|f| File.basename(f, '.*').camelize.constantize.name }
+               else
+                 [model]
+               end
+      models.each do |m|
+        @model = m.underscore.singularize
+        puts "Harvesting seeds for #{class_name}"
+        @harvest_data = []
+        dump_model(m)
+      end
+    end
+
+    def collect_data(model)
+      klass = model.camelize.constantize
       klass.all.each do |m|
         @harvest_data << ActiveSupport::JSON.decode(m.attributes.to_json).symbolize_keys
       end
-      template "seed.erb", write_to, force: true
+    end
+
+    def dump_model(model)
+      collect_data(model)
+      template "seed.erb", destination_path(model), force: true
     end
 
     def self.source_root(path=nil)
@@ -21,6 +36,10 @@ module SeedScatter
 
     def class_name
       @model.camelize
+    end
+
+    def destination_path(model)
+      "db/seeds/#{model.downcase.pluralize}.rb"
     end
   end
 

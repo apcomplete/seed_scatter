@@ -4,6 +4,7 @@ namespace :db do
   end
   desc "Dump model seeds"
   task :harvest, [:model] => :environment do |t,args|
-    SeedScatter::Harvester.new.dump_model args[:model]
+    args.with_defaults(:model => :all)
+    SeedScatter::Harvester.new.init args[:model]
   end
 end
