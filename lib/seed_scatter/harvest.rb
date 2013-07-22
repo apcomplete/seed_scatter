@@ -18,6 +18,19 @@ module SeedScatter
       end
     end
 
+    def reseed(model)
+      m = model.underscore.singularize
+      truncate(m)
+      f = File.expand_path(File.join("db","seeds","#{m.pluralize}.rb"))
+      puts "Reseeding #{f}"
+      load(f)
+    end
+
+    def truncate(model)
+      table = model.camelize.constantize.table_name
+      ActiveRecord::Base.connection.execute("TRUNCATE #{table}")
+    end
+
     def collect_data(model)
       klass = model.camelize.constantize
       klass.all.each do |m|
