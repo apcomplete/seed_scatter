@@ -35,10 +35,12 @@ To dump all of your models' information from the database to their respective se
 
     $ rake db:harvest
 
+To re-seed a specific model:
+
+    $ rake db:reseed[MODEL_NAME]
 
 ## Todos
 
-* Re-seed models one at a time
 * Support for namespaced models
 * Support for join tables
 
