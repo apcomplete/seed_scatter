@@ -6,12 +6,12 @@ module SeedScatter
 
     def init(model)
       models = if model == :all
-                 Dir['app/models/*.rb'].map {|f| File.basename(f, '.*').camelize.constantize.name }
+                 Dir['app/models/*.rb'].map {|f| File.basename(f, '.*').camelize.constantize }
                else
-                 [model]
+                 [model.camelize.constantize]
                end
       models.each do |m|
-        @model = m.underscore.singularize
+        @model = m
         puts "Harvesting seeds for #{class_name}"
         @harvest_data = []
         dump_model(m)
@@ -19,21 +19,19 @@ module SeedScatter
     end
 
     def reseed(model)
-      m = model.underscore.singularize
-      truncate(m)
-      f = File.expand_path(File.join("db","seeds","#{m.pluralize}.rb"))
+      @model = m = model.camelize.constantize
+      truncate(m.table_name)
+      f = File.expand_path(File.join("db","seeds","#{m.table_name}.rb"))
       puts "Reseeding #{f}"
       load(f)
     end
 
-    def truncate(model)
-      table = model.camelize.constantize.table_name
+    def truncate(table)
       ActiveRecord::Base.connection.execute("TRUNCATE #{table}")
     end
 
     def collect_data(model)
-      klass = model.camelize.constantize
-      klass.all.each do |m|
+      model.all.each do |m|
         @harvest_data << ActiveSupport::JSON.decode(m.attributes.to_json).symbolize_keys
       end
     end
@@ -48,11 +46,11 @@ module SeedScatter
     end
 
     def class_name
-      @model.camelize
+      @model.name
     end
 
     def destination_path(model)
-      "db/seeds/#{model.downcase.pluralize}.rb"
+      "db/seeds/#{model.table_name}.rb"
     end
   end
 
