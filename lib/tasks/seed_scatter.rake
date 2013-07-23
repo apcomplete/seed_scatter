@@ -7,4 +7,7 @@ namespace :db do
     args.with_defaults(:model => :all)
     SeedScatter::Harvester.new.init args[:model]
   end
+  task :reseed, [:model] => :environment do |t,args|
+    SeedScatter::Harvester.new.reseed args[:model]
+  end
 end
