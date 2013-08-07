@@ -32,7 +32,7 @@ module SeedScatter
 
     def collect_data(model)
       model.all.each do |m|
-        @harvest_data << ActiveSupport::JSON.decode(m.attributes.to_json).symbolize_keys
+        @harvest_data << ActiveSupport::JSON.decode(m.attributes.to_json, symbolize_names: true)
       end
     end
 
