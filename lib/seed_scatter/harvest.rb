@@ -11,10 +11,12 @@ module SeedScatter
                  [model.camelize.constantize]
                end
       models.each do |m|
-        @model = m
-        puts "Harvesting seeds for #{class_name}"
-        @harvest_data = []
-        dump_model(m)
+        if m < ActiveRecord::Base
+          @model = m
+          puts "Harvesting seeds for #{class_name}"
+          @harvest_data = []
+          dump_model(m)
+        end
       end
     end
 
