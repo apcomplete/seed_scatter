@@ -5,7 +5,12 @@ module SeedScatter
       paths["db/seeds.rb"].each do |seed_file|
         puts seed_file
         load(seed_file)
+        if ActiveRecord::Base.connection.adapter_nameeql?('PostgreSQL')
+          table_name = seed_file.gsub(/\.rb$/,'')
+          ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
+        end
       end
+
     end
   end
 end
