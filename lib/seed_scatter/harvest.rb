@@ -26,7 +26,7 @@ module SeedScatter
       f = File.expand_path(File.join("db","seeds","#{m.table_name}.rb"))
       puts "Reseeding #{f}"
       load(f)
-      if ActiveRecord::Base.connection.adapter_nameeql?('PostgreSQL')
+      if ActiveRecord::Base.connection.adapter_name.eql?('PostgreSQL')
         ActiveRecord::Base.connection.reset_pk_sequence!(m.table_name)
       end
     end
